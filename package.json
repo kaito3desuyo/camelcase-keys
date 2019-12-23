@@ -13,8 +13,8 @@
 		"node": ">=8"
 	},
 	"scripts": {
-		"build": "rm -rf ./dist/* && webpack",
-		"build:prod": "rm -rf ./dist/* && NODE_ENV=production webpack",
+		"build": "rimraf ./dist/* && webpack",
+		"build:prod": "rimraf ./dist/* && cross-env NODE_ENV=production webpack",
 		"test": "xo && ava && tsd",
 		"bench": "matcha bench/bench.js"
 	},
@@ -67,7 +67,9 @@
 		"babel-plugin-transform-commonjs": "^1.1.6",
 		"babel-plugin-transform-es2017-object-entries": "0.0.5",
 		"copy-webpack-plugin": "^5.1.1",
+		"cross-env": "^6.0.3",
 		"matcha": "^0.7.0",
+		"rimraf": "^3.0.0",
 		"tsd": "^0.9.0",
 		"webpack": "^4.41.3",
 		"webpack-cli": "^3.3.10",
