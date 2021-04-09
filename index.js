@@ -1,13 +1,11 @@
-"use strict";
-import "regenerator-runtime/runtime";
-
-import * as mapObj from "map-obj";
-import * as camelCase from "camelcase";
-import * as QuickLru from "quick-lru";
+'use strict';
+const mapObj = require('map-obj');
+const camelCase = require('camelcase');
+const QuickLru = require('quick-lru');
 
 const has = (array, key) =>
 	array.some(x => {
-		if (typeof x === "string") {
+		if (typeof x === 'string') {
 			return x === key;
 		}
 
@@ -15,46 +13,54 @@ const has = (array, key) =>
 		return x.test(key);
 	});
 
-const cache = new QuickLru({ maxSize: 100000 });
+const cache = new QuickLru({maxSize: 100000});
 
 // Reproduces behavior from `map-obj`
 const isObject = value =>
-	typeof value === "object" &&
+	typeof value === 'object' &&
 	value !== null &&
 	!(value instanceof RegExp) &&
 	!(value instanceof Error) &&
 	!(value instanceof Date);
 
 const camelCaseConvert = (input, options) => {
+	if (!isObject(input)) {
+		return input;
+	}
+
 	options = {
 		deep: false,
 		pascalCase: false,
 		...options
 	};
 
-	const { exclude, pascalCase, stopPaths, deep } = options;
+	const {exclude, pascalCase, stopPaths, deep} = options;
 
-	const stopPathsSet = stopPaths === undefined ? new Set() : new Set(stopPaths);
+	const stopPathsSet = new Set(stopPaths);
 
 	const makeMapper = parentPath => (key, value) => {
-		const path = parentPath === undefined ? key : `${parentPath}.${key}`;
+		if (deep && isObject(value)) {
+			const path = parentPath === undefined ? key : `${parentPath}.${key}`;
 
-		if (deep && isObject(value) && !stopPathsSet.has(path)) {
-			value = mapObj(value, makeMapper(path));
+			if (!stopPathsSet.has(path)) {
+				value = mapObj(value, makeMapper(path));
+			}
 		}
 
 		if (!(exclude && has(exclude, key))) {
-			if (cache.has(key)) {
-				key = cache.get(key);
+			const cacheKey = pascalCase ? `${key}_` : key;
+
+			if (cache.has(cacheKey)) {
+				key = cache.get(cacheKey);
 			} else {
-				const ret = camelCase(key, { pascalCase });
+				const returnValue = camelCase(key, {pascalCase});
 
 				if (key.length < 100) {
 					// Prevent abuse
-					cache.set(key, ret);
+					cache.set(cacheKey, returnValue);
 				}
 
-				key = ret;
+				key = returnValue;
 			}
 		}
 
@@ -64,9 +70,11 @@ const camelCaseConvert = (input, options) => {
 	return mapObj(input, makeMapper(undefined));
 };
 
-export default (input, options) => {
+module.exports = (input, options) => {
 	if (Array.isArray(input)) {
-		return Object.keys(input).map(key => camelCaseConvert(input[key], options));
+		return Object.keys(input).map(key =>
+			camelCaseConvert(input[key], options)
+		);
 	}
 
 	return camelCaseConvert(input, options);

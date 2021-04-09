@@ -74,3 +74,35 @@ test('accepts an array of objects', t => {
 		[{fooBar: true}, {barFoo: false}, {barFoo: 'false'}]
 	);
 });
+
+test('different pascalCase option values', t => {
+	// eslint-disable-next-line camelcase
+	t.true(camelcaseKeys({foo_bar_UPPERCASE: true}).fooBarUppercase);
+	// eslint-disable-next-line camelcase
+	t.true(camelcaseKeys({foo_bar_UPPERCASE: true}, {pascalCase: true}).FooBarUppercase);
+
+	t.deepEqual(
+		camelcaseKeys({'p-foo-bar': true, 'p-obj': {'p-two': false, 'p-arr': [{'p-three-four': true}]}}, {deep: true, pascalCase: true}),
+		{PFooBar: true, PObj: {PTwo: false, PArr: [{PThreeFour: true}]}}
+	);
+	t.deepEqual(
+		camelcaseKeys({'p-foo-bar': true, 'p-obj': {'p-two': false, 'p-arr': [{'p-three-four': true}]}}, {deep: true}),
+		{pFooBar: true, pObj: {pTwo: false, pArr: [{pThreeFour: true}]}}
+	);
+});
+
+test('handle array of non-objects', t => {
+	const input = ['name 1', 'name 2'];
+	t.deepEqual(
+		camelcaseKeys(input),
+		input
+	);
+});
+
+test('handle array of non-objects with `deep` option', t => {
+	const input = ['name 1', 'name 2'];
+	t.deepEqual(
+		camelcaseKeys(input, {deep: true}),
+		input
+	);
+});

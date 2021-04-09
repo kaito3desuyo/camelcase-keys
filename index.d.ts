@@ -46,7 +46,7 @@ declare namespace camelcaseKeys {
 		// }
 		```
 		*/
-		readonly stopPaths?: ReadonlyArray<string>;
+		readonly stopPaths?: readonly string[];
 
 		/**
 		Uppercase the first character as in `bye-bye` → `ByeBye`.
@@ -90,13 +90,14 @@ camelcaseKeys(argv);
 //=> {_: [], fooBar: true}
 ```
 */
-declare function camelcaseKeys(
-	input: ReadonlyArray<{[key: string]: any}>,
-	options?: camelcaseKeys.Options
-): Array<{[key: string]: unknown}>;
-declare function camelcaseKeys(
-	input: {[key: string]: any},
-	options?: camelcaseKeys.Options
-): {[key: string]: unknown};
+declare function camelcaseKeys<T extends ReadonlyArray<Record<string, any>>>(
+	input: T,
+	options?: camelcaseKeys.Options,
+): T;
+
+declare function camelcaseKeys<T extends Record<string, any>>(
+	input: T,
+	options?: camelcaseKeys.Options,
+): T;
 
 export = camelcaseKeys;

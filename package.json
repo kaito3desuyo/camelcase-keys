@@ -1,16 +1,17 @@
 {
 	"name": "camelcase-keys",
-	"version": "6.1.1",
+	"version": "6.2.2",
 	"description": "Convert object keys to camel case",
 	"license": "MIT",
 	"repository": "sindresorhus/camelcase-keys",
+	"funding": "https://github.com/sponsors/sindresorhus",
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"url": "https://sindresorhus.com"
 	},
 	"engines": {
-		"node": ">=8"
+		"node": ">=10"
 	},
 	"scripts": {
 		"build": "rimraf ./dist/* && webpack",
@@ -45,6 +46,8 @@
 		"string",
 		"text",
 		"convert",
+		"pascalcase",
+		"pascal-case",
 		"deep",
 		"recurse",
 		"recursive"
@@ -62,18 +65,21 @@
 		"@babel/plugin-transform-runtime": "^7.7.6",
 		"@babel/preset-env": "^7.7.7",
 		"@babel/runtime": "^7.7.7",
-		"ava": "^2.1.0",
 		"babel-loader": "^8.0.6",
 		"babel-plugin-transform-commonjs": "^1.1.6",
 		"babel-plugin-transform-es2017-object-entries": "0.0.5",
 		"copy-webpack-plugin": "^5.1.1",
 		"cross-env": "^6.0.3",
-		"matcha": "^0.7.0",
 		"rimraf": "^3.0.0",
-		"tsd": "^0.9.0",
 		"webpack": "^4.41.3",
 		"webpack-cli": "^3.3.10",
-		"xo": "^0.25.3"
+		"camelcase": "^6.2.0",
+		"map-obj": "^4.1.0",
+		"quick-lru": "^5.1.1",
+		"ava": "^2.4.0",
+		"matcha": "^0.7.0",
+		"tsd": "^0.14.0",
+		"xo": "^0.36.1"
 	},
 	"xo": {
 		"overrides": [

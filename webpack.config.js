@@ -1,35 +1,35 @@
-const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
-const BabelEnginePlugin = require("babel-engine-plugin");
+const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
+const BabelEnginePlugin = require('babel-engine-plugin');
 
 module.exports = {
-	mode: process.env.NODE_ENV || "development",
-	entry: "./index.js",
+	mode: process.env.NODE_ENV || 'development',
+	entry: './index.js',
 	module: {
 		rules: [
 			{
 				test: /\.js?$/,
-				use: [{ loader: "babel-loader" }],
+				use: [{loader: 'babel-loader'}],
 				exclude: /node_modules/
 			}
 		]
 	},
 	resolve: {
-		extensions: [".js"]
+		extensions: ['.js']
 	},
 	output: {
-		filename: "index.js",
-		path: path.resolve(__dirname, "dist"),
-		library: "camelcase-keys",
-		libraryTarget: "umd",
-		libraryExport: "default",
-		globalObject: "typeof self !== 'undefined' ? self : this"
+		filename: 'index.js',
+		path: path.resolve(__dirname, 'dist'),
+		library: 'camelcase-keys',
+		libraryTarget: 'umd',
+		libraryExport: 'default',
+		globalObject: 'typeof self !== \'undefined\' ? self : this'
 	},
 	plugins: [
 		new CopyPlugin([
 			{
-				from: "./index.d.ts",
-				to: "./index.d.ts"
+				from: './index.d.ts',
+				to: './index.d.ts'
 			}
 		]),
 		new BabelEnginePlugin()
